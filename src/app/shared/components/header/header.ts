@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { SidebarService } from '../../../core/services/sidebar.service';
 
 @Component({
@@ -8,6 +8,7 @@ import { SidebarService } from '../../../core/services/sidebar.service';
   styleUrl: './header.css',
 })
 export class Header {
+  @Input() usuario: string = '';
   dropdownColapsado = false;
   profileColapsado  = false;
 

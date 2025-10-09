@@ -13,7 +13,7 @@ export class Nav {
   constructor(private sidebarService: SidebarService) {}
 
   ngOnInit() {
-    this.sidebarService.colapsado$.subscribe(valor => {
+    this.sidebarService.colapsado$.subscribe((valor) => {
       this.sidebarColapsado = valor;
     });
   }

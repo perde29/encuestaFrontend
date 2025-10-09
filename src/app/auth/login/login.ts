@@ -27,7 +27,6 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
     this.formRegister = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
@@ -35,16 +34,23 @@ export class LoginComponent implements OnInit {
   }
 
   submitLogin(): void {
-
-
-     if (this.formRegister.valid) {
-        this.loginError = '';
-        // console.log(this.formRegister.value);
-        this.auth.login(this.formRegister.value as Login).subscribe(resp => {
-            console.log(resp);
-        })
-
-     }
-
+    if (this.formRegister.valid) {
+      this.loginError = '';
+      // console.log(this.formRegister.value);
+      this.auth.login(this.formRegister.value as Login).subscribe({
+        error: (resp: any) => {
+          console.error(resp);
+          this.loginError = resp;
+        },
+        complete: () => {
+          console.info('Login completo');
+          this.router.navigateByUrl('/dashboard');
+          this.formRegister.reset();
+        },
+      });
+    } else {
+      this.formRegister.markAllAsTouched();
+      alert('Error al ingresar los datos.');
+    }
   }
 }
