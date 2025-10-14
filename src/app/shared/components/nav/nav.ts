@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { SidebarService } from '../../../core/services/sidebar.service';
+import { PageRoutingModule } from "../../../page/page-routing-module";
 
 @Component({
   selector: 'app-nav',
-  imports: [],
+  imports: [PageRoutingModule],
   templateUrl: './nav.html',
   styleUrl: './nav.css',
 })
@@ -17,4 +18,7 @@ export class Nav {
       this.sidebarColapsado = valor;
     });
   }
+
+
+
 }

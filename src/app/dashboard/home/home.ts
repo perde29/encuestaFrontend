@@ -17,10 +17,11 @@ export class Home implements OnInit, AfterViewInit {
   constructor(private readonly router: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.usuario = this.router.snapshot.data['usuario'];
+    // icono menu
     setTimeout(() => {
       feather.replace();
     });
+    this.usuario = this.router.snapshot.data['usuario'];
   }
 
   ngAfterViewInit() {}
