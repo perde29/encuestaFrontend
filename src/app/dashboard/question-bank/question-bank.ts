@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Nav } from '../../shared/components/nav/nav';
 import { Header } from '../../shared/components/header/header';
 import { ActivatedRoute } from '@angular/router';
@@ -16,10 +16,12 @@ import feather from 'feather-icons';
 export class QuestionBank implements OnInit {
   usuario: string = '';
   questionary: Questionary[] = [];
+  questionaryCan: number[] = [];
 
   constructor(
     private readonly router: ActivatedRoute,
-    private readonly questionaryService: QuestionaryService
+    private readonly questionaryService: QuestionaryService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -29,8 +31,30 @@ export class QuestionBank implements OnInit {
     });
 
     this.usuario = this.router.snapshot.data['usuario'];
+    this.cargarDatos();
+  }
+
+  cargarDatos() {
     this.questionaryService.getQuestionary().subscribe((resp) => {
       this.questionary = resp;
+      this.questionaryCan = Array.from(
+        { length: resp.length },
+        (_, i) => i + 1
+      ); // resp.length;
     });
+  }
+
+  orderRegistration(event: Event) {
+    // alert('Ordenando');
+    const selectElement = event.target as HTMLSelectElement;
+    const id = Number(selectElement.id);
+    const value = Number(selectElement.value);
+    this.questionaryService
+      .getQuestionayOrder({ id, value })
+      .subscribe((res) => {
+        console.log(res);
+      });
+
+    window.location.reload();
   }
 }

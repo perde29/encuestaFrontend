@@ -23,11 +23,30 @@
                   <tbody>
                     @for (item of questionary; track $index) {
                     <tr>
-                      <th scope="row">1</th>
+                      <th scope="row">{{ $index + 1 }}</th>
                       <td>{{ item.title }}</td>
-                      <td> @if (item.status == 1){ Activo } @else { Inactivo } </td>
-                      <td></td>
-                      <td> Editar | Eliminar </td>
+                      <td>
+                        @if (item.status == 1){ Activo } @else { Inactivo }
+                      </td>
+                      <td>
+                        <select
+                          name="orden"
+                          [id]="item.id"
+                          class="form-control orden"
+                          (change)="orderRegistration($event)"
+                        >
+                          @for (orden of questionaryCan; track orden) {
+                          <option
+                            [value]="orden"
+                            [selected]="item.orden == orden"
+                          >
+                            {{ orden }}
+                          </option>
+                          <!--[selected]="item.orden === orden" -->
+                          }
+                        </select>
+                      </td>
+                      <td>Editar | Eliminar</td>
                     </tr>
                     }
                   </tbody>
