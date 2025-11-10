@@ -1,0 +1,68 @@
+<div class="wrapper">
+  <app-nav></app-nav>
+  <div class="main">
+    <app-header [usuario]="usuario"></app-header>
+    <main class="content">
+      <div class="container-fluid p-0">
+        <h1 class="h3 mb-3"><strong>Banco de Preguntas:</strong></h1>
+
+        <div class="card shadow mb-4">
+          <div class="card-header">
+            <strong class="card-title"
+              >Nuevo:
+              <!-- {% if id %} Editar: {% else %}  {% endif %} -->
+            </strong>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="formQuestionBank" (submit)="submitQuestionary()">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group mb-3">
+                    <label for="simpleinput">Titulo</label>
+                    <input
+                      type="text"
+                      formControlName="title"
+                      class="form-control"
+                    />
+                    @if (formQuestionBank.get('title')?.invalid &&
+                    (formQuestionBank.get('title')?.dirty ||
+                    formQuestionBank.get('title')?.touched)){ @if(
+                    formQuestionBank.get('title')?.errors?.['required'] ) {
+                    <div class="text-danger">
+                      <div>* El Titulo es requerido.</div>
+                    </div>
+                    } }
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group mb-3">
+                    <label for="simpleinput">Estado</label>
+                    <select class="form-control" formControlName="status">
+                      <option value="1">Activo</option>
+                      <option value="0">Inactivo</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group mb-3 float-right">
+                    <input type="hidden" formControlName="id" />
+                    <!-- {{ registro.id }} -->
+                    <button
+                      id="save-questionary"
+                      type="submit"
+                      class="btn mb-2 btn-primary"
+                      [disabled]="formQuestionBank.invalid"
+                    >
+                      Guardar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- / .card -->
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

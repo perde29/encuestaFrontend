@@ -1,15 +1,16 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { Nav } from '../../shared/components/nav/nav';
-import { Header } from '../../shared/components/header/header';
-import { ActivatedRoute } from '@angular/router';
-import { Questionary } from '../../core/interfaces/interfaces';
-import { QuestionaryService } from '../../core/services/questionary.service';
+import { Nav } from '../../../shared/components/nav/nav';
+import { Header } from '../../../shared/components/header/header';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Questionary } from '../../../core/interfaces/interfaces';
+import { QuestionaryService } from '../../../core/services/questionary.service';
 import feather from 'feather-icons';
+import { PageRoutingModule } from '../../../page/page-routing-module';
 
 @Component({
   selector: 'app-question-bank',
   standalone: true,
-  imports: [Nav, Header],
+  imports: [Nav, Header, RouterLink,PageRoutingModule],
   templateUrl: './question-bank.html',
   styleUrl: './question-bank.css',
 })
