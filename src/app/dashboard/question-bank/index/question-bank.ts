@@ -10,7 +10,7 @@ import { PageRoutingModule } from '../../../page/page-routing-module';
 @Component({
   selector: 'app-question-bank',
   standalone: true,
-  imports: [Nav, Header, RouterLink,PageRoutingModule],
+  imports: [Nav, Header, RouterLink, PageRoutingModule],
   templateUrl: './question-bank.html',
   styleUrl: './question-bank.css',
 })

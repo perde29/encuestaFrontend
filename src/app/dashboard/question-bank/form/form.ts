@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Nav } from '../../../shared/components/nav/nav';
 import { Header } from '../../../shared/components/header/header';
+import * as bootstrap from 'bootstrap';
+
 import {
   FormBuilder,
   FormGroup,
@@ -9,11 +11,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { QuestionaryService } from '../../../core/services/questionary.service';
+import { Questions } from '../../../core/interfaces/interfaces';
+import { PopupAlternative } from '../popup-alternative/popup-alternative';
 
 @Component({
   selector: 'app-add',
   standalone: true,
-  imports: [Nav, Header, ReactiveFormsModule],
+  imports: [Nav, Header, ReactiveFormsModule, RouterLink, PopupAlternative],
   templateUrl: './form.html',
   styleUrl: './form.css',
 })
@@ -22,6 +26,8 @@ export class QuestionBankForm implements OnInit {
   usuario: string = '';
   id: number = 0;
   loginError: string = '';
+  cabecera: string = '';
+  questions: Questions[] = [];
 
   constructor(
     private readonly router: ActivatedRoute,
@@ -32,8 +38,10 @@ export class QuestionBankForm implements OnInit {
 
   ngOnInit(): void {
     this.id = Number(this.router.snapshot.paramMap.get('id'));
+    this.cabecera = 'Nuevo:';
 
     this.usuario = this.router.snapshot.data['usuario'];
+
     this.formQuestionBank = this.formBuilder.group({
       title: ['', [Validators.required]],
       status: [1, [Validators.required]],
@@ -42,8 +50,24 @@ export class QuestionBankForm implements OnInit {
 
     // si se esta realizando un edit
     if (this.id) {
-      console.log(this.id);
-      this.questionaryService.getQuestionaryId(this.id);
+      this.questionaryService.getQuestionaryId(this.id)?.subscribe({
+        next: (resp) => {
+          // Actualizar valores en el form
+          this.formQuestionBank.patchValue({
+            title: resp.title,
+            status: resp.status,
+            id: resp.id,
+          });
+        },
+      });
+
+      this.questionaryService.getQuestionsQuestionaryId(this.id)?.subscribe({
+        next: (resp) => {
+          this.questions = resp;
+        },
+      });
+
+      this.cabecera = 'Editar:';
     }
   }
 
@@ -64,6 +88,18 @@ export class QuestionBankForm implements OnInit {
             this.loginError = 'Ocurrió un error al guardar el cuestionario';
           },
         });
+    }
+  }
+
+  onNewQuestion(): void {
+    // exampleModalToggle
+    const modalElement = document.getElementById('exampleModalToggle');
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
+
+
+
     }
   }
 }

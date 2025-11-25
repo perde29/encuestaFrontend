@@ -1,0 +1,57 @@
+<div class="row">
+	<div class="col-md-12">
+    <form id="form-alternative" name="form-alternative"  >
+			<div class="form-group mb-3">
+				<label>Pregunta</label>
+				<input type="text" id="ask" name="ask"  class="form-control">
+			</div>
+
+			<div class="form-group mb-3 checkbox" >
+				<label>Todo los sectores</label> <br>
+				<input style="margin-left:5px;" type="checkbox" id="all_sectors" name="all_sectors" value="1" />
+			</div>
+			<div class="form-group mb-3">
+       [ Selector de Categoria ] <br>
+      <!--
+				<label>{#Categoria#}Sector</label>
+				<select class="form-control" multiple name="category" id="category" >
+				 {% for dat in category %}
+				   <option value="{{ dat.id }}" {% if  questionsSector[dat.id] is defined %} selected {% endif %}  > {{ dat.title }} </option>
+				 {% endfor %}
+				</select>
+      -->
+			</div>
+			<div class="form-group mb-3">
+				<label>Tipo Alternativa</label>
+				<select class="form-control" name="alternative" id="alternative" >
+				  <option value="1" > [ Text ] </option>
+				  <option value="2" > [ Text Area ] </option>
+				  <option value="3" > [ Select ] </option>
+				  <option value="6" > [ Date ] </option>
+				  <option value="8" > [ Email ] </option>
+        </select>
+			</div>
+			<div class="form-group mb-3">
+				<label>Estado</label>
+				<select class="form-control" name="status" id="status" >
+					<option value="1" > Activo </option>
+					<option value="0" > Inactivo </option>
+				</select>
+			</div>
+
+			<div class="form-group mb-3">
+				<label>Campo Respuesta Cuestionario</label> <br>
+				<input style="margin-left:5px;" type="checkbox" id="questionnaire_response" name="questionnaire_response" value="1">
+			</div>
+
+			<div class="col-12 mb-4 text-right" >
+        <!--
+				 <input name="id_questionary" id="id_questionary" type="hidden" value="{{ id_questionary }}"  />
+				 <input name="id_questions" id="id_questions" type="hidden" value="{{ questions.id }}"  />
+				 <button id="saveQuestions" name="saveQuestions" type="button" class="btn mb-2 btn-info">Guardar</button>
+				 <button type="button" class="btn  mb-2 btn-secondary" data-dismiss="modal">Close</button>
+        -->
+			</div>
+		</form>
+  </div>
+</div>

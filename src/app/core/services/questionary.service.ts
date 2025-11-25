@@ -5,16 +5,8 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Environment } from '../../../environment/environment';
-import {
-  catchError,
-  firstValueFrom,
-  map,
-  Observable,
-  of,
-  switchMap,
-  throwError,
-} from 'rxjs';
-import { Questionary } from '../interfaces/interfaces';
+import { catchError, map, switchMap, tap, throwError } from 'rxjs';
+import { Questionary, Questions } from '../interfaces/interfaces';
 
 const base_url = Environment.urlHost;
 
@@ -37,11 +29,9 @@ export class QuestionaryService {
   }
 
   getQuestionaryId(id: number) {
-    alert(id);
     return this.http.get<Questionary>(`${base_url}/questionary/${id}`).pipe(
       map((resp) => {
-        console.log(resp);
-        // return resp;
+        return resp;
       }),
       catchError(this.handleError)
     );
@@ -61,6 +51,18 @@ export class QuestionaryService {
     );
   }
 
+  getQuestionsQuestionaryId(id: number) {
+    // /questions/questions-questionary/{id}
+    return this.http
+      .get<Questions[]>(`${base_url}/questions/questions-questionary/${id}`)
+      .pipe(
+        map((resp) => {
+          return resp;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
   getQuestionarySave(QuestionBank: Questionary) {
     /*console.log(QuestionBank);*/
 
@@ -70,7 +72,26 @@ export class QuestionaryService {
     });
 
     if (QuestionBank.id) {
-      return null;
+      const body = {
+        title: QuestionBank.title,
+        status: QuestionBank.status,
+        // orden: QuestionBank.orden,
+      };
+
+      console.log(body);
+
+      return this.http
+        .patch<Questionary>(
+          `${base_url}/questionary/${QuestionBank.id}`,
+          body,
+          { headers }
+        )
+        .pipe(
+          tap((res) => {
+            console.log('Respuesta del patch:', res);
+          })
+        );
+      // return null;
     } else {
       // Obtener el último orden antes de crear
       // Primero obtenemos el último orden

@@ -3,10 +3,11 @@ export interface Questionary {
   title?: string;
   status?: number;
   orden?: number;
-  /*
-  dateInsert: string | Date;
-  userInsert: number;
-  dateUpdate: string | Date;
-  userUpdate: number;
-  */
+}
+
+export interface Questions {
+  id?: number;
+  title?: string;
+  cant_questions?: string;
+  input_type?: string;
 }
