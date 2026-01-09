@@ -77,7 +77,9 @@
           <div class="card shadow" id="questionnaire-detail" [hidden]="!id">
             <div class="card-body">
               <p class="float-right" style="color: #fff">
-                <a class="btn mb-2 btn-info"  (click)="onNewQuestion()" >Agregar</a>
+                <a class="btn mb-2 btn-info" (click)="onNewQuestion()"
+                  >Agregar</a
+                >
               </p>
               <table id="tableQuestions" class="table table-hover">
                 <thead>
@@ -91,44 +93,16 @@
                 </thead>
                 <tbody>
                   @for (item of questions; track $index) {
-                    <tr [id]="'questions_' + item.id">
-                      <td>{{ item.id }}</td>
-                      <td>{{ item.title }}</td>
-                      <td>{{ item.input_type }}</td>
-                      <td>{{ item.cant_questions }}</td>
-                      <td>  editar </td>
-                    </tr>
+                  <tr [id]="'questions_' + item.id">
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.title }}</td>
+                    <td>{{ item.inputType }}</td>
+                    <td>{{ item.cant_questions }}</td>
+                    <td>
+                      <a (click)="editQuestionnaire(item.id)"> editar </a>
+                    </td>
+                  </tr>
                   }
-                  <!--
-                    {% for dat in questions %}
-                    <tr id="questions_{{ dat.id }}">
-                      <td>{{ dat.id }}</td>
-                      <td>{{ dat.title }}</td>
-                      <td>{{ dat.input_type }}</td>
-                      <td style="text-align: center">
-                        {% if dat.cant_questions == 0 %} - {% else %}
-                        {{ dat.cant_questions }} {% endif %}
-                      </td>
-                      <td>
-                        <a
-                          onclick="addQuestionnaire('{{ dat.id }}');"
-                          style="cursor: pointer; color: #1b68ff"
-                          ques="{{ dat.id }}"
-                        >
-                          Editar
-                        </a>
-                        {% if dat.cant_questions == 0 %} |
-                        <a
-                          href="#"
-                          onclick="deteleQuestionnaire('{{ dat.id }}')"
-                        >
-                          Eliminar
-                        </a>
-                        {% endif %}
-                      </td>
-                    </tr>
-                    {% endfor %}
-                  -->
                 </tbody>
               </table>
             </div>
@@ -141,22 +115,34 @@
   </div>
 
   <!-- Popup -->
-  <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
+  <div
+    class="modal fade"
+    id="exampleModalToggle"
+    aria-hidden="true"
+    aria-labelledby="exampleModalToggleLabel"
+    tabindex="-1"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalToggleLabel">Nueva Pregunta:</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title" id="exampleModalToggleLabel">
+            Nueva Pregunta:
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
         <div class="modal-body">
-          <app-popup-alternative></app-popup-alternative>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">Cerrar</button>
+            @if (showPopup) {
+              <app-popup-alternative
+                [questionnaireId]="selectedId"
+              ></app-popup-alternative>
+            }
         </div>
       </div>
     </div>
   </div>
-
-
 </div>

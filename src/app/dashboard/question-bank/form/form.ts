@@ -14,10 +14,17 @@ import { QuestionaryService } from '../../../core/services/questionary.service';
 import { Questions } from '../../../core/interfaces/interfaces';
 import { PopupAlternative } from '../popup-alternative/popup-alternative';
 
+
 @Component({
   selector: 'app-add',
   standalone: true,
-  imports: [Nav, Header, ReactiveFormsModule, RouterLink, PopupAlternative],
+  imports: [
+    Nav,
+    Header,
+    ReactiveFormsModule,
+    RouterLink,
+    PopupAlternative,
+  ],
   templateUrl: './form.html',
   styleUrl: './form.css',
 })
@@ -28,12 +35,14 @@ export class QuestionBankForm implements OnInit {
   loginError: string = '';
   cabecera: string = '';
   questions: Questions[] = [];
+  selectedId: number = 0;
+  showPopup: boolean = false;
 
   constructor(
     private readonly router: ActivatedRoute,
     private readonly route: Router,
     private readonly formBuilder: FormBuilder,
-    private readonly questionaryService: QuestionaryService
+    private readonly questionaryService: QuestionaryService //  private readonly questionsService: QuestionsService
   ) {}
 
   ngOnInit(): void {
@@ -92,14 +101,22 @@ export class QuestionBankForm implements OnInit {
   }
 
   onNewQuestion(): void {
-    // exampleModalToggle
+    this.showPopup = true;
+    this.selectedId = 0;
     const modalElement = document.getElementById('exampleModalToggle');
     if (modalElement) {
       const modal = new bootstrap.Modal(modalElement);
       modal.show();
+    }
+  }
 
-
-
+  editQuestionnaire(id: any) {
+    this.showPopup = true;
+    this.selectedId = id;
+    const modalElement = document.getElementById('exampleModalToggle');
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
     }
   }
 }

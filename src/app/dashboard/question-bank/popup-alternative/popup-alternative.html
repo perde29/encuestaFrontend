@@ -1,57 +1,130 @@
 <div class="row">
-	<div class="col-md-12">
-    <form id="form-alternative" name="form-alternative"  >
-			<div class="form-group mb-3">
-				<label>Pregunta</label>
-				<input type="text" id="ask" name="ask"  class="form-control">
-			</div>
+  <div class="col-md-12">
+    @if (formPopupAlternative) {
+    <form [formGroup]="formPopupAlternative">
+      <div class="form-group mb-3">
+        <label>Pregunta </label>
+        <input type="text" formControlName="ask" class="form-control" />
+      </div>
 
-			<div class="form-group mb-3 checkbox" >
-				<label>Todo los sectores</label> <br>
-				<input style="margin-left:5px;" type="checkbox" id="all_sectors" name="all_sectors" value="1" />
-			</div>
-			<div class="form-group mb-3">
-       [ Selector de Categoria ] <br>
-      <!--
-				<label>{#Categoria#}Sector</label>
-				<select class="form-control" multiple name="category" id="category" >
-				 {% for dat in category %}
-				   <option value="{{ dat.id }}" {% if  questionsSector[dat.id] is defined %} selected {% endif %}  > {{ dat.title }} </option>
-				 {% endfor %}
-				</select>
-      -->
-			</div>
-			<div class="form-group mb-3">
-				<label>Tipo Alternativa</label>
-				<select class="form-control" name="alternative" id="alternative" >
-				  <option value="1" > [ Text ] </option>
-				  <option value="2" > [ Text Area ] </option>
-				  <option value="3" > [ Select ] </option>
-				  <option value="6" > [ Date ] </option>
-				  <option value="8" > [ Email ] </option>
+      <div class="form-group mb-3 checkbox">
+        <label>Todo los sectores</label> <br />
+        <input
+          type="checkbox"
+          formControlName="all_sectors"
+          style="margin-left: 5px"
+        />
+      </div>
+
+      <div class="form-group mb-12">
+        <label>Sector</label>
+        <p-multiselect
+          [options]="category"
+          optionLabel="name"
+          placeholder="Seleccionar Categoria"
+          formControlName="categories"
+          [maxSelectedLabels]="4"
+          class="w-full"
+          display="chip"
+        />
+      </div>
+
+      <div class="form-group mb-3">
+        <label>Tipo Alternativa</label>
+        <select
+          class="form-control"
+          formControlName="inputType"
+          (change)="onAlternative($event)"
+        >
+          <option value="1">[ Text ]</option>
+          <option value="2">[ Text Area ]</option>
+          <option value="3">[ Select ]</option>
+          <option value="6">[ Date ]</option>
+          <option value="8">[ Email ]</option>
         </select>
-			</div>
-			<div class="form-group mb-3">
-				<label>Estado</label>
-				<select class="form-control" name="status" id="status" >
-					<option value="1" > Activo </option>
-					<option value="0" > Inactivo </option>
-				</select>
-			</div>
+      </div>
 
-			<div class="form-group mb-3">
-				<label>Campo Respuesta Cuestionario</label> <br>
-				<input style="margin-left:5px;" type="checkbox" id="questionnaire_response" name="questionnaire_response" value="1">
-			</div>
+      <div class="form-group mb-3">
+        <label>Estado</label>
+        <select class="form-control" name="status" id="status">
+          <option value="1">Activo</option>
+          <option value="0">Inactivo</option>
+        </select>
+      </div>
 
-			<div class="col-12 mb-4 text-right" >
-        <!--
-				 <input name="id_questionary" id="id_questionary" type="hidden" value="{{ id_questionary }}"  />
-				 <input name="id_questions" id="id_questions" type="hidden" value="{{ questions.id }}"  />
-				 <button id="saveQuestions" name="saveQuestions" type="button" class="btn mb-2 btn-info">Guardar</button>
-				 <button type="button" class="btn  mb-2 btn-secondary" data-dismiss="modal">Close</button>
-        -->
-			</div>
-		</form>
+      <div class="form-group mb-3">
+        <label>Campo Respuesta Cuestionario</label> <br />
+        <input
+          style="margin-left: 5px"
+          type="checkbox"
+          formControlName="questionnaireResponse"
+        />
+      </div>
+
+      <input type="hidden" formControlName="idQuestions" />
+
+      <!--::: Agregar Botones :::-->
+
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="submit">Guardar</button>
+
+        <button
+          class="btn btn-primary"
+          data-bs-target="#exampleModalToggle2"
+          data-bs-toggle="modal"
+          data-bs-dismiss="modal"
+        >
+          Cerrar
+        </button>
+      </div>
+
+      <!--::: Fin de Botones :::-->
+    </form>
+
+    <div class="col-12 mb-4">
+      <div class="card shadow" *ngIf="mostrarDiv">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-9">
+              Alternativa:
+              <input
+                type="text"
+                class="form-control"
+                style="display: initial; width: 76%"
+                [(ngModel)]="texto"
+                name="texto"
+              />
+              <input
+                type="hidden"
+                name="id_alternative"
+                [(ngModel)]="id_alternative"
+              />
+            </div>
+            <div class="col-3 mb-3">
+              <button
+                type="button"
+                (click)="onResponseAlternative()"
+                class="btn btn-primary"
+              >
+                Guardar
+              </button>
+            </div>
+          </div>
+          <table class="table table-hover" id="listAlternative">
+            <thead class="thead-dark">
+              <tr>
+                <th>ID</th>
+                <th>Respuesta</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <!-- /.card-body -->
+      </div>
+    </div>
+
+    }
   </div>
 </div>

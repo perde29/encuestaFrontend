@@ -1,0 +1,27 @@
+/* Estilo del contenedor principal del multiselect */
+:host ::ng-deep .p-multiselect {
+  background-color: #f2f4f7 !important; /* color claro */
+  border: 1px solid #d3d6db !important;
+  border-radius: 6px;
+}
+
+/* Cuando está enfocado */
+:host ::ng-deep .p-multiselect.p-focus {
+  border-color: #8ab4f8 !important;
+}
+
+/* Texto dentro del multiselect */
+:host ::ng-deep .p-multiselect-label {
+  color: #333 !important;
+}
+
+/* Estilo de los chips seleccionados */
+:host ::ng-deep .p-multiselect-token {
+  background: #e6f2ff !important; /* azul clarito */
+  color: #084298 !important;      /* texto oscuro */
+  border-radius: 4px;
+}
+
+:host ::ng-deep .p-multiselect {
+  width: 100% !important;
+}

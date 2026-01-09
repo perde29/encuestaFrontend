@@ -9,5 +9,14 @@ export interface Questions {
   id?: number;
   title?: string;
   cant_questions?: string;
-  input_type?: string;
+  inputType?: string;
+  status?: number;
+  allSectors?: number;
+  questionnaireResponse?: number;
+}
+
+export interface Category {
+  id?: number;
+  title?: string;
+  state?: number;
 }
