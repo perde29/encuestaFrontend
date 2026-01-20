@@ -13,6 +13,7 @@ export interface Questions {
   status?: number;
   allSectors?: number;
   questionnaireResponse?: number;
+  questionaryId?: number;
 }
 
 export interface Category {

@@ -78,8 +78,6 @@ export class QuestionaryService {
         // orden: QuestionBank.orden,
       };
 
-      console.log(body);
-
       return this.http
         .patch<Questionary>(
           `${base_url}/questionary/${QuestionBank.id}`,

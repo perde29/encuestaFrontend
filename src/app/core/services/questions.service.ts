@@ -1,8 +1,12 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Questions } from '../interfaces/interfaces';
 import { Environment } from '../../../environment/environment';
-import { catchError, map, throwError } from 'rxjs';
+import { catchError, map, tap, throwError } from 'rxjs';
 
 const base_url = Environment.urlHost;
 
@@ -17,8 +21,56 @@ export class QuestionsService {
       map((resp) => {
         return resp;
       }),
-      catchError(this.handleError)
+      catchError(this.handleError),
     );
+  }
+
+  getsaveQuestions(PopupAlternative: Questions) {
+    const token = localStorage.getItem('token')?.trim();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    const body = {
+      title: PopupAlternative.title,
+      inputType: PopupAlternative.inputType,
+      status: PopupAlternative.status,
+      allSectors: Number(PopupAlternative.allSectors),
+      questionnaireResponse: PopupAlternative.questionnaireResponse,
+    };
+
+    if (PopupAlternative.id) {
+      // editar
+
+      return this.http
+        .patch<any>(
+          `${base_url}/questions/${PopupAlternative.id}`,
+          body,
+          {
+            headers,
+          },
+        )
+        .pipe(
+          tap((res) => {
+            console.log(res);
+          }),
+        );
+    } else {
+      const newBody = {
+        ...body,
+        questionaryId: PopupAlternative.questionaryId, // o el valor que corresponda
+      };
+
+      // nuevo questions || /questions
+      return this.http
+        .post<any>(`${base_url}/questions`, newBody, { headers })
+        .pipe(
+          tap((res) => {
+            alert('1');
+            console.log('Respuesta del backend:', res);
+          }),
+        );
+    }
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -28,7 +80,7 @@ export class QuestionsService {
       console.error('Backend retornó el código de estado ', error);
     }
     return throwError(
-      () => new Error('Algo falló. Por favor intente nuevamente.')
+      () => new Error('Algo falló. Por favor intente nuevamente.'),
     );
   }
 }

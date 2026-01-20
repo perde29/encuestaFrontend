@@ -37,6 +37,7 @@ export class QuestionBankForm implements OnInit {
   questions: Questions[] = [];
   selectedId: number = 0;
   showPopup: boolean = false;
+  questionaryId: number = 0;
 
   constructor(
     private readonly router: ActivatedRoute,
@@ -103,6 +104,8 @@ export class QuestionBankForm implements OnInit {
   onNewQuestion(): void {
     this.showPopup = true;
     this.selectedId = 0;
+    this.questionaryId = this.formQuestionBank.value.id;
+
     const modalElement = document.getElementById('exampleModalToggle');
     if (modalElement) {
       const modal = new bootstrap.Modal(modalElement);
@@ -113,6 +116,7 @@ export class QuestionBankForm implements OnInit {
   editQuestionnaire(id: any) {
     this.showPopup = true;
     this.selectedId = id;
+    this.questionaryId = 0; // por que ya esta guardado
     const modalElement = document.getElementById('exampleModalToggle');
     if (modalElement) {
       const modal = new bootstrap.Modal(modalElement);

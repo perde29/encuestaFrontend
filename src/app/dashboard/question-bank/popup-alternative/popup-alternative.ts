@@ -27,10 +27,12 @@ import { CommonModule } from '@angular/common';
   styleUrl: './popup-alternative.css',
 })
 export class PopupAlternative implements OnInit, OnChanges {
-  @Input() questionnaireId!: number;
+  @Input() questionsId!: number;
+  @Input() questionaryId!: number;
   category: any[] = [];
   selectedCategoryIds: number[] = [];
-  questions: any;
+  loginError: string = '';
+
   mostrarDiv: boolean = false;
   formPopupAlternative!: FormGroup;
 
@@ -40,7 +42,7 @@ export class PopupAlternative implements OnInit, OnChanges {
   constructor(
     private readonly categoryService: CategoryService,
     private readonly questionsService: QuestionsService,
-    private readonly formBuilder: FormBuilder
+    private readonly formBuilder: FormBuilder,
   ) {}
 
   ngOnInit(): void {}
@@ -52,41 +54,42 @@ export class PopupAlternative implements OnInit, OnChanges {
       },
     });
 
+    //console.log(this.questionaryId)
+
     this.formPopupAlternative = this.formBuilder.group({
-      ask: ['', [Validators.required]],
-      all_sectors: ['1'],
+      title: ['', [Validators.required]],
+      allSectors: ['1'],
       inputType: [1, [Validators.required]],
       status: [1, [Validators.required]],
       questionnaireResponse: [1, [Validators.required]],
-      idQuestions: [''],
+      id: [''],
       categories: [],
+      questionaryId: [this.questionaryId],
     });
 
-    if (this.questionnaireId) {
-      this.questionsService.getQuestionsId(this.questionnaireId)?.subscribe({
+    if (this.questionsId) {
+      this.questionsService.getQuestionsId(this.questionsId)?.subscribe({
         next: (resp) => {
           // this.questions = resp;  || inputType
           this.formPopupAlternative.patchValue({
-            ask: resp.title,
-            all_sectors: resp.allSectors,
+            title: resp.title,
+            allSectors: resp.allSectors,
             status: resp.status,
             questionnaireResponse: resp.questionnaireResponse,
             inputType: resp.inputType,
-            idQuestions: resp.id,
+            id: resp.id,
           });
         },
       });
 
-      this.categoryService
-        .getCategoryQuestions(this.questionnaireId)
-        ?.subscribe({
-          next: (resp) => {
-            /* console.log(resp); */
-            this.formPopupAlternative.patchValue({
-              categories: resp,
-            });
-          },
-        });
+      this.categoryService.getCategoryQuestions(this.questionsId)?.subscribe({
+        next: (resp) => {
+          /* console.log(resp); */
+          this.formPopupAlternative.patchValue({
+            categories: resp,
+          });
+        },
+      });
     }
   }
 
@@ -101,9 +104,24 @@ export class PopupAlternative implements OnInit, OnChanges {
     /* alert('Texto:' + this.texto); */
   }
 
-  onSaveQuestions () {
+  onSaveQuestions() {}
 
+  submitPopupAlternative(): void {
+    if (this.formPopupAlternative.valid) {
+      this.loginError = '';
+
+      // getsaveQuestions
+      this.questionsService
+        .getsaveQuestions(this.formPopupAlternative.value)
+        ?.subscribe({
+          next: (resp) => {
+            console.log(resp);
+          },
+          error: (err) => {
+            console.error('Error al guardar:', err);
+            this.loginError = 'Ocurrió un error al guardar el cuestionario';
+          },
+        });
+    }
   }
-
-
 }

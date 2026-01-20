@@ -1,17 +1,20 @@
 <div class="row">
   <div class="col-md-12">
     @if (formPopupAlternative) {
-    <form [formGroup]="formPopupAlternative">
+    <form
+      [formGroup]="formPopupAlternative"
+      (submit)="submitPopupAlternative()"
+    >
       <div class="form-group mb-3">
         <label>Pregunta </label>
-        <input type="text" formControlName="ask" class="form-control" />
+        <input type="text" formControlName="title" class="form-control" />
       </div>
 
       <div class="form-group mb-3 checkbox">
         <label>Todo los sectores</label> <br />
         <input
           type="checkbox"
-          formControlName="all_sectors"
+          formControlName="allSectors"
           style="margin-left: 5px"
         />
       </div>
@@ -61,8 +64,8 @@
         />
       </div>
 
-      <input type="hidden" formControlName="idQuestions" />
-
+      <input type="hidden" formControlName="id" />
+      <input type="hidden" formControlName="questionaryId" />
       <!--::: Agregar Botones :::-->
 
       <div class="modal-footer">
