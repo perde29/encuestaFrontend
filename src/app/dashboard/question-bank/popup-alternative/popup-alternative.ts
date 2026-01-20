@@ -116,6 +116,8 @@ export class PopupAlternative implements OnInit, OnChanges {
         ?.subscribe({
           next: (resp) => {
             console.log(resp);
+            // Refrescar la pantalla principal
+           // window.location.reload();
           },
           error: (err) => {
             console.error('Error al guardar:', err);

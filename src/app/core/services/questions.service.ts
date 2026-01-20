@@ -43,13 +43,9 @@ export class QuestionsService {
       // editar
 
       return this.http
-        .patch<any>(
-          `${base_url}/questions/${PopupAlternative.id}`,
-          body,
-          {
-            headers,
-          },
-        )
+        .patch<any>(`${base_url}/questions/${PopupAlternative.id}`, body, {
+          headers,
+        })
         .pipe(
           tap((res) => {
             console.log(res);
@@ -66,7 +62,6 @@ export class QuestionsService {
         .post<any>(`${base_url}/questions`, newBody, { headers })
         .pipe(
           tap((res) => {
-            alert('1');
             console.log('Respuesta del backend:', res);
           }),
         );
