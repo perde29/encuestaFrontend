@@ -37,7 +37,7 @@ export class PopupAlternative implements OnInit, OnChanges {
   formPopupAlternative!: FormGroup;
 
   texto: string = '';
-  id_alternative: string = '';
+  idAlternative: string = '';
 
   constructor(
     private readonly categoryService: CategoryService,
@@ -54,7 +54,7 @@ export class PopupAlternative implements OnInit, OnChanges {
       },
     });
 
-    //console.log(this.questionaryId)
+    console.log(this.questionaryId)
 
     this.formPopupAlternative = this.formBuilder.group({
       title: ['', [Validators.required]],
@@ -101,7 +101,14 @@ export class PopupAlternative implements OnInit, OnChanges {
   }
 
   onResponseAlternative() {
-    /* alert('Texto:' + this.texto); */
+    const payload = {
+      idAlternative: this.idAlternative, // puede ser null si es nuevo
+      texto: this.texto,
+      questionaryId: this.formPopupAlternative.get('questionaryId')?.value,
+      id: this.formPopupAlternative.get('id')?.value,
+    };
+
+    console.log(payload);
   }
 
   onSaveQuestions() {}
@@ -110,20 +117,18 @@ export class PopupAlternative implements OnInit, OnChanges {
     if (this.formPopupAlternative.valid) {
       this.loginError = '';
 
-      // getsaveQuestions
-      this.questionsService
-        .getsaveQuestions(this.formPopupAlternative.value)
-        ?.subscribe({
-          next: (resp) => {
-            console.log(resp);
-            // Refrescar la pantalla principal
-           // window.location.reload();
-          },
-          error: (err) => {
-            console.error('Error al guardar:', err);
-            this.loginError = 'Ocurrió un error al guardar el cuestionario';
-          },
-        });
+      const formData = { ...this.formPopupAlternative.value };
+      formData.categories = formData.categories.map((cat: any) => cat.code);
+
+      this.questionsService.getsaveQuestions(formData)?.subscribe({
+        next: (resp) => {
+          //console.log(resp);
+        },
+        error: (err) => {
+          console.error('Error al guardar:', err);
+          this.loginError = 'Ocurrió un error al guardar el cuestionario';
+        },
+      });
     }
   }
 }

@@ -31,12 +31,14 @@ export class QuestionsService {
       Authorization: `Bearer ${token}`,
     });
 
+    /* console.log(PopupAlternative); */
     const body = {
       title: PopupAlternative.title,
       inputType: PopupAlternative.inputType,
       status: PopupAlternative.status,
       allSectors: Number(PopupAlternative.allSectors),
       questionnaireResponse: PopupAlternative.questionnaireResponse,
+      categories: PopupAlternative.categories,
     };
 
     if (PopupAlternative.id) {
@@ -48,13 +50,13 @@ export class QuestionsService {
         })
         .pipe(
           tap((res) => {
-            console.log(res);
+            //console.log(res);
           }),
         );
     } else {
       const newBody = {
         ...body,
-        questionaryId: PopupAlternative.questionaryId, // o el valor que corresponda
+        questionaryId: PopupAlternative.questionaryId,
       };
 
       // nuevo questions || /questions

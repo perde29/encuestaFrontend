@@ -14,6 +14,7 @@ export interface Questions {
   allSectors?: number;
   questionnaireResponse?: number;
   questionaryId?: number;
+  categories?: any[];
 }
 
 export interface Category {
