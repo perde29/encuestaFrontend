@@ -42,15 +42,14 @@ export class QuestionsService {
     };
 
     if (PopupAlternative.id) {
-      // editar
-
+      // /questions/{id}
       return this.http
         .patch<any>(`${base_url}/questions/${PopupAlternative.id}`, body, {
           headers,
         })
         .pipe(
           tap((res) => {
-            //console.log(res);
+            return res;
           }),
         );
     } else {
@@ -64,7 +63,7 @@ export class QuestionsService {
         .post<any>(`${base_url}/questions`, newBody, { headers })
         .pipe(
           tap((res) => {
-            console.log('Respuesta del backend:', res);
+            return res;
           }),
         );
     }

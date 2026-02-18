@@ -22,3 +22,9 @@ export interface Category {
   title?: string;
   state?: number;
 }
+
+export interface Alternative {
+  id?: number;
+  texto?: string;
+  idAlternative?: number;
+}

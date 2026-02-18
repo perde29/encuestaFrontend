@@ -11,6 +11,7 @@ import {
   ɵInternalFormsSharedModule,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AlternativeService } from '../../../core/services/alternative.service';
 
 // import { Questions } from '../../../core/interfaces/interfaces';
 
@@ -30,6 +31,7 @@ export class PopupAlternative implements OnInit, OnChanges {
   @Input() questionsId!: number;
   @Input() questionaryId!: number;
   category: any[] = [];
+  alternatives: any[] = [];
   selectedCategoryIds: number[] = [];
   loginError: string = '';
 
@@ -37,10 +39,11 @@ export class PopupAlternative implements OnInit, OnChanges {
   formPopupAlternative!: FormGroup;
 
   texto: string = '';
-  idAlternative: string = '';
+  idAlternative: number = 0;
 
   constructor(
     private readonly categoryService: CategoryService,
+    private readonly alternativeService: AlternativeService,
     private readonly questionsService: QuestionsService,
     private readonly formBuilder: FormBuilder,
   ) {}
@@ -54,17 +57,15 @@ export class PopupAlternative implements OnInit, OnChanges {
       },
     });
 
-    console.log(this.questionaryId)
-
     this.formPopupAlternative = this.formBuilder.group({
       title: ['', [Validators.required]],
       allSectors: ['1'],
       inputType: [1, [Validators.required]],
       status: [1, [Validators.required]],
       questionnaireResponse: [1, [Validators.required]],
-      id: [''],
+      id: [0],
       categories: [],
-      questionaryId: [this.questionaryId],
+      /* questionsId: [this.questionsId], */
     });
 
     if (this.questionsId) {
@@ -79,6 +80,9 @@ export class PopupAlternative implements OnInit, OnChanges {
             inputType: resp.inputType,
             id: resp.id,
           });
+
+          // para mostrar el registro si esta el select ::
+          this.mostrarDiv = Number(resp.inputType ?? 0) === 3;
         },
       });
 
@@ -90,6 +94,16 @@ export class PopupAlternative implements OnInit, OnChanges {
           });
         },
       });
+
+      // getAlternativeByQuestionId
+      this.alternativeService
+        .getAlternativeByQuestionId(this.questionsId)
+        ?.subscribe({
+          next: (resp) => {
+            this.alternatives = resp;
+            // console.log('Alternativas:', resp);
+          },
+        });
     }
   }
 
@@ -100,15 +114,31 @@ export class PopupAlternative implements OnInit, OnChanges {
     this.mostrarDiv = value === 3;
   }
 
-  onResponseAlternative() {
+  onResponseAlternative(): void {
     const payload = {
       idAlternative: this.idAlternative, // puede ser null si es nuevo
       texto: this.texto,
-      questionaryId: this.formPopupAlternative.get('questionaryId')?.value,
       id: this.formPopupAlternative.get('id')?.value,
     };
 
-    console.log(payload);
+    this.alternativeService.saveAlternative(payload)?.subscribe({
+      next: (resp) => {
+        /* En esta seccion se debe de actualizar la informacion de datos */
+        this.texto = '';
+        this.idAlternative = 0;
+        if (resp.userUpdate) {
+          const updated = resp as any;
+
+          this.alternatives = this.alternatives.map((a) =>
+            a.id === updated.id
+              ? { ...a, title: updated.title ?? updated.texto ?? this.texto }
+              : a,
+          );
+        } else {
+          this.alternatives = [...this.alternatives, resp];
+        }
+      },
+    });
   }
 
   onSaveQuestions() {}
@@ -122,7 +152,7 @@ export class PopupAlternative implements OnInit, OnChanges {
 
       this.questionsService.getsaveQuestions(formData)?.subscribe({
         next: (resp) => {
-          //console.log(resp);
+          console.log(resp);
         },
         error: (err) => {
           console.error('Error al guardar:', err);
@@ -130,5 +160,25 @@ export class PopupAlternative implements OnInit, OnChanges {
         },
       });
     }
+  }
+
+  onEditAlternative(item: any) {
+    this.texto = item.title;
+    this.idAlternative = item.id;
+  }
+
+  onDeleteAlternative(item: any) {
+    // Aquí puedes implementar la lógica para eliminar la alternativa
+    // console.log('Eliminar alternativa con ID:', item.id);
+
+    this.alternativeService.deleteAlternative(item.id)?.subscribe({
+      next: (resp) => {
+        // Actualizar la lista de alternativas después de eliminar
+        this.alternatives = this.alternatives.filter((a) => a.id !== item.id);
+      },
+      error: (err) => {
+        console.error('Error al eliminar:', err);
+      },
+    });
   }
 }
