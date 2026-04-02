@@ -28,10 +28,14 @@ export class CategoryService {
     /* /category-questions/{id} */ /* category_questions */
     return this.http.get<any[]>(`${base_url}/category-questions/${id}`).pipe(
       map((data) => {
-        return data.map((item) => ({
-          code: item.id,
-          name: item.title,
-        }));
+        if (!data || data.length === 0) {
+          return data.map((item) => ({
+            code: item.id,
+            name: item.title,
+          }));
+        } else {
+          return [];
+        }
       }),
       catchError(this.handleError)
     );

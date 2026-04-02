@@ -73,6 +73,8 @@ export class QuestionBankForm implements OnInit {
 
       this.questionaryService.getQuestionsQuestionaryId(this.id)?.subscribe({
         next: (resp) => {
+          console.log(resp);
+
           this.questions = resp;
         },
       });

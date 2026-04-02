@@ -12,7 +12,7 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AlternativeService } from '../../../core/services/alternative.service';
-
+import Swal from 'sweetalert2';
 // import { Questions } from '../../../core/interfaces/interfaces';
 
 @Component({
@@ -60,9 +60,9 @@ export class PopupAlternative implements OnInit, OnChanges {
     this.formPopupAlternative = this.formBuilder.group({
       title: ['', [Validators.required]],
       allSectors: ['1'],
-      inputType: [1, [Validators.required]],
-      status: [1, [Validators.required]],
-      questionnaireResponse: [1, [Validators.required]],
+      inputType: [1,[]],
+      status: [1, []],
+      questionnaireResponse: [1, []],
       id: [0],
       categories: [],
       /* questionsId: [this.questionsId], */
@@ -88,10 +88,11 @@ export class PopupAlternative implements OnInit, OnChanges {
 
       this.categoryService.getCategoryQuestions(this.questionsId)?.subscribe({
         next: (resp) => {
-          /* console.log(resp); */
-          this.formPopupAlternative.patchValue({
-            categories: resp,
-          });
+          if (resp.length > 0) {
+            this.formPopupAlternative.patchValue({
+              categories: resp,
+            });
+          }
         },
       });
 
@@ -144,10 +145,22 @@ export class PopupAlternative implements OnInit, OnChanges {
   onSaveQuestions() {}
 
   submitPopupAlternative(): void {
-    if (this.formPopupAlternative.valid) {
-      this.loginError = '';
 
+    if (this.formPopupAlternative.valid) {
+
+      this.loginError = '';
       const formData = { ...this.formPopupAlternative.value };
+
+      if (!formData.categories || formData.categories.length === 0) {
+        Swal.fire({
+          title: 'Error',
+          text: 'Debe seleccionar al menos una categoría',
+          icon: 'error',
+          confirmButtonText: 'Aceptar',
+        });
+        return;
+      }
+
       formData.categories = formData.categories.map((cat: any) => cat.code);
 
       this.questionsService.getsaveQuestions(formData)?.subscribe({
@@ -168,17 +181,28 @@ export class PopupAlternative implements OnInit, OnChanges {
   }
 
   onDeleteAlternative(item: any) {
-    // Aquí puedes implementar la lógica para eliminar la alternativa
-    // console.log('Eliminar alternativa con ID:', item.id);
-
-    this.alternativeService.deleteAlternative(item.id)?.subscribe({
-      next: (resp) => {
-        // Actualizar la lista de alternativas después de eliminar
-        this.alternatives = this.alternatives.filter((a) => a.id !== item.id);
-      },
-      error: (err) => {
-        console.error('Error al eliminar:', err);
-      },
+    Swal.fire({
+      title: '¿Eliminar registro?',
+      text: 'Esta acción no se puede deshacer',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Aquí puedes implementar la lógica para eliminar la alternativa
+        this.alternativeService.deleteAlternative(item.id)?.subscribe({
+          next: (resp) => {
+            // Actualizar la lista de alternativas después de eliminar
+            this.alternatives = this.alternatives.filter(
+              (a) => a.id !== item.id,
+            );
+          },
+          error: (err) => {
+            console.error('Error al eliminar:', err);
+          },
+        });
+      }
     });
   }
 }

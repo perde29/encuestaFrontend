@@ -87,7 +87,6 @@
                     <th>ID</th>
                     <th>Pregunta</th>
                     <th>Tipo</th>
-                    <th>Cant. Respuestas</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -96,8 +95,7 @@
                   <tr [id]="'questions_' + item.id">
                     <td>{{ item.id }}</td>
                     <td>{{ item.title }}</td>
-                    <td>{{ item.inputType }}</td>
-                    <td>{{ item.cant_questions }}</td>
+                    <td>{{ item.input_type }}</td>
                     <td>
                       <a (click)="editQuestionnaire(item.id)"> editar </a>
                     </td>
