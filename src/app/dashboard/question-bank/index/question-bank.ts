@@ -6,6 +6,7 @@ import { Questionary } from '../../../core/interfaces/interfaces';
 import { QuestionaryService } from '../../../core/services/questionary.service';
 import feather from 'feather-icons';
 import { PageRoutingModule } from '../../../page/page-routing-module';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-question-bank',
@@ -22,7 +23,7 @@ export class QuestionBank implements OnInit {
   constructor(
     private readonly router: ActivatedRoute,
     private readonly questionaryService: QuestionaryService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -40,7 +41,7 @@ export class QuestionBank implements OnInit {
       this.questionary = resp;
       this.questionaryCan = Array.from(
         { length: resp.length },
-        (_, i) => i + 1
+        (_, i) => i + 1,
       ); // resp.length;
     });
   }
@@ -57,5 +58,38 @@ export class QuestionBank implements OnInit {
       });
 
     window.location.reload();
+  }
+
+  onDeleteQuestion(id: any) {
+    /* alert('¿Desea eliminar esta pregunta?'); */
+    Swal.fire({
+      title: '¿Eliminar registro?',
+      text: 'Esta acción no se puede deshacer',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Aquí puedes implementar la lógica para eliminar la alternativa
+        this.questionaryService.deleteQuestionary(id).subscribe({
+          next: () => {
+            Swal.fire(
+              'Eliminado',
+              'El registro fue eliminado correctamente.',
+              'success',
+            );
+            this.cargarDatos();
+          },
+          error: (err: any) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: err?.error?.message ?? err?.error?.message,
+            });
+          },
+        });
+      }
+    });
   }
 }

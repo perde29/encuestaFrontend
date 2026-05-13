@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
 import { AlternativeService } from '../../../core/services/alternative.service';
 import Swal from 'sweetalert2';
 // import { Questions } from '../../../core/interfaces/interfaces';
-
+import * as bootstrap from 'bootstrap';
 @Component({
   selector: 'app-popup-alternative',
   imports: [
@@ -60,7 +60,7 @@ export class PopupAlternative implements OnInit, OnChanges {
     this.formPopupAlternative = this.formBuilder.group({
       title: ['', [Validators.required]],
       allSectors: ['1'],
-      inputType: [1,[]],
+      inputType: [1, []],
       status: [1, []],
       questionnaireResponse: [1, []],
       id: [0],
@@ -145,9 +145,7 @@ export class PopupAlternative implements OnInit, OnChanges {
   onSaveQuestions() {}
 
   submitPopupAlternative(): void {
-
     if (this.formPopupAlternative.valid) {
-
       this.loginError = '';
       const formData = { ...this.formPopupAlternative.value };
 
@@ -166,6 +164,14 @@ export class PopupAlternative implements OnInit, OnChanges {
       this.questionsService.getsaveQuestions(formData)?.subscribe({
         next: (resp) => {
           console.log(resp);
+
+          /* Cerrar Modal */
+          const modalElement = document.getElementById('exampleModalToggle');
+          if (modalElement) {
+            const modal = bootstrap.Modal.getInstance(modalElement);
+            modal?.hide();
+          }
+
         },
         error: (err) => {
           console.error('Error al guardar:', err);

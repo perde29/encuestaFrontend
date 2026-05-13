@@ -24,7 +24,7 @@ export class QuestionaryService {
       map((data) => {
         return data;
       }),
-      catchError(this.handleError)
+      catchError(this.handleError),
     );
   }
 
@@ -33,7 +33,7 @@ export class QuestionaryService {
       map((resp) => {
         return resp;
       }),
-      catchError(this.handleError)
+      catchError(this.handleError),
     );
   }
 
@@ -47,7 +47,7 @@ export class QuestionaryService {
     return this.http.patch<any>(
       `${base_url}/questionary/order/${id}`,
       { orden: value },
-      { headers }
+      { headers },
     );
   }
 
@@ -59,7 +59,7 @@ export class QuestionaryService {
         map((resp) => {
           return resp;
         }),
-        catchError(this.handleError)
+        catchError(this.handleError),
       );
   }
 
@@ -82,12 +82,12 @@ export class QuestionaryService {
         .patch<Questionary>(
           `${base_url}/questionary/${QuestionBank.id}`,
           body,
-          { headers }
+          { headers },
         )
         .pipe(
           tap((res) => {
             console.log('Respuesta del patch:', res);
-          })
+          }),
         );
       // return null;
     } else {
@@ -111,11 +111,24 @@ export class QuestionaryService {
             return this.http.post<Questionary>(
               `${base_url}/questionary`,
               body,
-              { headers }
+              { headers },
             );
-          })
+          }),
         );
     }
+  }
+
+  deleteQuestionary(id: number) {
+    const token = localStorage.getItem('token')?.trim();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.delete(`${base_url}/questionary/${id}`, { headers }).pipe(
+      tap((res) => {
+        return res;
+      }),
+    );
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -125,7 +138,7 @@ export class QuestionaryService {
       console.error('Backend retornó el código de estado ', error);
     }
     return throwError(
-      () => new Error('Algo falló. Por favor intente nuevamente.')
+      () => new Error('Algo falló. Por favor intente nuevamente.'),
     );
   }
 }

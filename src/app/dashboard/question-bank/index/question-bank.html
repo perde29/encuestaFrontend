@@ -31,42 +31,47 @@
                   </thead>
                   <tbody>
                     @for (item of questionary; track $index) {
-                    <tr>
-                      <th scope="row">{{ $index + 1 }}</th>
-                      <td>{{ item.title }}</td>
-                      <td>
-                        @if (item.status == 1){ Activo } @else { Inactivo }
-                      </td>
-                      <td>
-                        <select
-                          name="orden"
-                          [id]="item.id"
-                          class="form-control orden"
-                          (change)="orderRegistration($event)"
-                        >
-                          @for (orden of questionaryCan; track orden) {
-                          <option
-                            [value]="orden"
-                            [selected]="item.orden == orden"
+                      <tr class="questionary{{ item.id }}" >
+                        <th scope="row">{{ $index + 1 }}</th>
+                        <td>{{ item.title }}</td>
+                        <td>
+                          @if (item.status == 1){ Activo } @else { Inactivo }
+                        </td>
+                        <td>
+                          <select
+                            name="orden"
+                            [id]="item.id"
+                            class="form-control orden"
+                            (change)="orderRegistration($event)"
                           >
-                            {{ orden }}
-                          </option>
-                          <!--[selected]="item.orden === orden" -->
-                          }
-                        </select>
-                      </td>
-                      <td>
-                        <a style="color: black;"
-                          [routerLink]="[
-                            '/dashboard/question-bank/edit',
-                            item.id
-                          ]"
-                        >
-                          Editar
-                        </a>
-                        | Eliminar
-                      </td>
-                    </tr>
+                            @for (orden of questionaryCan; track orden) {
+                            <option
+                              [value]="orden"
+                              [selected]="item.orden == orden"
+                            >
+                              {{ orden }}
+                            </option>
+                            <!--[selected]="item.orden === orden" -->
+                            }
+                          </select>
+                        </td>
+                        <td>
+                          <a style="color: black;"
+                            [routerLink]="[
+                              '/dashboard/question-bank/edit',
+                              item.id
+                            ]"
+                          >
+                            Editar
+                          </a>
+                          |
+                          <a style="color: black; border-bottom: 1px solid;"
+                            (click)="onDeleteQuestion(item.id)"
+                          >
+                          Eliminar
+                          </a>
+                        </td>
+                      </tr>
                     }
                   </tbody>
                 </table>
