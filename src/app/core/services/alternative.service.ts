@@ -49,14 +49,12 @@ export class AlternativeService {
   }
 
   deleteAlternative(id: number) {
-
     // /alternative/{id}
     return this.http.delete(`${base_url}/alternative/${id}`).pipe(
       tap((res) => {
         return res;
       }),
     );
-
   }
 
   getAlternativeByQuestionId(questionId: number) {
@@ -67,4 +65,11 @@ export class AlternativeService {
     );
   }
 
+  getpreguntaIdAlternative(id: number) {
+    return this.http.get<any>(`${base_url}/alternative/pregunta/${id}`).pipe(
+      tap((res) => {
+        return res;
+      }),
+    );
+  }
 }

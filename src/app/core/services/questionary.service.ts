@@ -51,6 +51,14 @@ export class QuestionaryService {
     );
   }
 
+  getviewsSurveys(id: number) {
+    return this.http.get<any>(`${base_url}/questionary/views-surveys/${id}`).pipe(
+      map((resp) => {
+        return resp;
+      })
+    );
+  }
+
   getQuestionsQuestionaryId(id: number) {
     // /questions/questions-questionary/{id}
     return this.http
@@ -128,6 +136,7 @@ export class QuestionaryService {
       tap((res) => {
         return res;
       }),
+
     );
   }
 

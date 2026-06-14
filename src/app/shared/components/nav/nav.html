@@ -33,36 +33,56 @@
         </a>
       </li>
 
-      <li class="sidebar-item">
-        <a class="sidebar-link">
+      <li
+        class="sidebar-item"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <a class="sidebar-link" [routerLink]="['/dashboard/questionnaire']">
           <i class="align-middle" data-feather="box"></i>
           <span class="align-middle">Cuestionario</span>
         </a>
       </li>
 
-      <li class="sidebar-item">
-        <a class="sidebar-link">
+      <li
+        class="sidebar-item"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <a class="sidebar-link" [routerLink]="['/dashboard/answer-questionary']">
           <i class="align-middle" data-feather="database"></i>
           <span class="align-middle">Respuesta Cuestionario</span>
         </a>
       </li>
 
-      <li class="sidebar-item">
-        <a class="sidebar-link">
+      <li
+        class="sidebar-item"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <a class="sidebar-link" [routerLink]="['/dashboard/sectors']">
           <i class="align-middle" data-feather="inbox"></i>
           <span class="align-middle">Gestión de Sector</span>
         </a>
       </li>
 
-      <li class="sidebar-item">
-        <a class="sidebar-link">
+      <li
+        class="sidebar-item"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <a class="sidebar-link" [routerLink]="['/dashboard/users']">
           <i class="align-middle" data-feather="user"></i>
           <span class="align-middle">Gestión de Usuario</span>
         </a>
       </li>
 
-      <li class="sidebar-item">
-        <a class="sidebar-link">
+      <li
+        class="sidebar-item"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <a class="sidebar-link" [routerLink]="['/dashboard/solve-questionary']">
           <i class="align-middle" data-feather="book"></i>
           <span class="align-middle">Resolver encuesta</span>
         </a>

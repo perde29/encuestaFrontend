@@ -1,0 +1,21 @@
+@if (type === 1) {
+  <input type="text" class="form-control" />
+}
+@else if (type === 2) {
+  <textarea rows="5" cols="100" class="form-control"></textarea>
+}
+@else if (type === 3) {
+  <select class="form-control">
+    @for (dat of alternative; track dat.id) {
+      <option [value]="dat.id">
+        {{ dat.title }}
+      </option>
+    }
+  </select>
+}
+@else if (type === 6) {
+  <input type="date" class="form-control" />
+}
+@else if (type === 8) {
+  <input type="email" class="form-control" />
+}

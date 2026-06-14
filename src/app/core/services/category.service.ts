@@ -20,7 +20,17 @@ export class CategoryService {
           code: item.id,
         }));
       }),
-      catchError(this.handleError)
+      catchError(this.handleError),
+    );
+  }
+
+  getCategoryId(id: number) {
+    return this.http.get<Category[]>(`${base_url}/category/${id}`).pipe(
+      map((data) => {
+        return data;
+      }),
+
+      catchError(this.handleError),
     );
   }
 
@@ -37,7 +47,20 @@ export class CategoryService {
           return [];
         }
       }),
-      catchError(this.handleError)
+      catchError(this.handleError),
+    );
+  }
+
+  getquestionnaireList() {
+    return this.http.get<any[]>(`${base_url}/category/questionnaire-list`).pipe(
+      map((data) => {
+        return data.map((item) => ({
+          id: item.id,
+          title: item.title,
+          state: item.state,
+        }));
+      }),
+      catchError(this.handleError),
     );
   }
 
@@ -48,7 +71,7 @@ export class CategoryService {
       console.error('Backend retornó el código de estado ', error);
     }
     return throwError(
-      () => new Error('Algo falló. Por favor intente nuevamente.')
+      () => new Error('Algo falló. Por favor intente nuevamente.'),
     );
   }
 }

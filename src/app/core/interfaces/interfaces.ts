@@ -29,3 +29,9 @@ export interface Alternative {
   texto?: string;
   idAlternative?: number;
 }
+
+export interface QuestionnaireList {
+  id?: number;
+  title?: string;
+  state?: string;
+}
