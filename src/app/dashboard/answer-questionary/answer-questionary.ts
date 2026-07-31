@@ -3,6 +3,7 @@ import { Header } from '../../shared/components/header/header';
 import { Nav } from '../../shared/components/nav/nav';
 import feather from 'feather-icons';
 import { ActivatedRoute } from '@angular/router';
+import { QuestionsService } from '../../core/services/questions.service';
 
 @Component({
   selector: 'app-answer-questionary',
@@ -13,8 +14,13 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AnswerQuestionary implements OnInit, AfterViewInit {
   usuario: string = '';
+  titleCustomer: any = [];
+  registerCustomer: any = [];
 
-  constructor(private readonly router: ActivatedRoute) {}
+  constructor(
+    private readonly router: ActivatedRoute,
+    private readonly questionService: QuestionsService,
+  ) {}
 
   ngOnInit(): void {
     // icono menu
@@ -22,6 +28,15 @@ export class AnswerQuestionary implements OnInit, AfterViewInit {
       feather.replace();
     });
     this.usuario = this.router.snapshot.data['usuario'];
+
+    this.questionService.getCabeceraTitleCustomer().subscribe((resp) => {
+      this.titleCustomer = resp;
+    });
+
+    this.questionService.getRegisterCustomer().subscribe((resp) => {
+      console.log(resp);
+      this.registerCustomer = resp;
+    });
   }
   ngAfterViewInit(): void {}
 }

@@ -69,6 +69,24 @@ export class QuestionsService {
     }
   }
 
+  getCabeceraTitleCustomer() {
+    return this.http.get<any[]>(`${base_url}/questions/title-customer`).pipe(
+      map((data) => {
+        return data;
+      }),
+      catchError(this.handleError),
+    );
+  }
+
+  getRegisterCustomer() {
+    return this.http.get<any[]>(`${base_url}/questions/register-customer`).pipe(
+      map((data) => {
+        return data;
+      }),
+      catchError(this.handleError),
+    );
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.status === 0) {
       console.error('Se ha producio un error ', error.error);

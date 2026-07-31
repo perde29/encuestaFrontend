@@ -7,6 +7,7 @@ import { QuestionBankForm } from './question-bank/form/form';
 import { Questionnaire } from './questionnaire/index/questionnaire';
 import { QuestionsPreview } from './questionnaire/preview/preview';
 import { AnswerQuestionary } from './answer-questionary/answer-questionary';
+import { Sectors } from './sectors/sectors';
 
 export const routes: Routes = [
   {
@@ -44,8 +45,12 @@ export const routes: Routes = [
     path: 'answer-questionary',
     component: AnswerQuestionary,
     resolve: { usuario: ProfileResolverService },
+  },
+  {
+    path: 'sectors',
+    component: Sectors,
+    resolve: { usuario: ProfileResolverService },
   }
-
 ];
 
 /*
