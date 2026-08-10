@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Environment } from '../../../environment/environment';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Category } from '../interfaces/interfaces';
 import { catchError, map, throwError } from 'rxjs';
 
@@ -61,6 +65,40 @@ export class CategoryService {
         }));
       }),
       catchError(this.handleError),
+    );
+  }
+
+  getSector() {
+    return this.http.get<Category[]>(`${base_url}/category`).pipe(
+      map((data) => {
+        return data.map((item) => ({
+          id: item.id,
+          title: item.title,
+          state: item.state,
+        }));
+      }),
+      catchError(this.handleError),
+    );
+  }
+
+  deleteCategory(id: number) {
+    const token = localStorage.getItem('token')?.trim();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.delete(`${base_url}/category/${id}`, { headers }).pipe(
+      map((data) => {
+        return data;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        return throwError(
+          () =>
+            new Error(
+              error?.error?.message ?? 'Error al eliminar la categoría',
+            ),
+        );
+      }),
     );
   }
 

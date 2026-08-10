@@ -4,13 +4,62 @@
     <app-header [usuario]="usuario"></app-header>
     <main class="content">
       <div class="container-fluid p-0">
-        <h1 class="h3 mb-3"><strong>Respuesta Cuestionario:</strong></h1>
+        <h1 class="h3 mb-3">
+          <strong>Gestión de Sector:</strong>
+          <!-- [routerLink]="['/dashboard/question-bank/add']" -->
+          <a
+            class="btn mb-2 btn-info"
+            style="float: right"
+            (click)="onPopupSectors(0)"
+          >
+            Nuevo
+          </a>
+        </h1>
         <!-- Contenido del cuestionario -->
         <div class="row">
           <div class="col-12">
             <div class="card">
               <div class="card-body">
-                <!-- <p>Aquí va el contenido del cuestionario.</p>  -->
+                <table class="table">
+                  <thead class="table-light">
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Titulo</th>
+                      <th scope="col">Estado</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (dat of sector; track $index) {
+                      <tr class="questionnaire{{ dat.id }}">
+                        <th scope="row">{{ $index + 1 }}</th>
+                        <td>{{ dat.title }}</td>
+                        <td>
+                          @if (dat.state === 1) {
+                            <span class="badge bg-success">Activo</span>
+                          } @else {
+                            <span class="badge bg-secondary">Inactivo</span>
+                          }
+                        </td>
+                        <td>
+                          <a
+                            style="color: black; border-bottom: 1px solid"
+                            (click)="onPopupSectors(dat.id)"
+                          >
+                            Editar
+                          </a>
+                          |
+                          <a
+                            style="color: black; border-bottom: 1px solid"
+                            (click)="onDeleteSectors(dat.id)"
+                          >
+                            Eliminar
+                          </a>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>

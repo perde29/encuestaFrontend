@@ -14,17 +14,10 @@ import { QuestionaryService } from '../../../core/services/questionary.service';
 import { Questions } from '../../../core/interfaces/interfaces';
 import { PopupAlternative } from '../popup-alternative/popup-alternative';
 
-
 @Component({
   selector: 'app-add',
   standalone: true,
-  imports: [
-    Nav,
-    Header,
-    ReactiveFormsModule,
-    RouterLink,
-    PopupAlternative,
-  ],
+  imports: [Nav, Header, ReactiveFormsModule, RouterLink, PopupAlternative],
   templateUrl: './form.html',
   styleUrl: './form.css',
 })
@@ -43,7 +36,7 @@ export class QuestionBankForm implements OnInit {
     private readonly router: ActivatedRoute,
     private readonly route: Router,
     private readonly formBuilder: FormBuilder,
-    private readonly questionaryService: QuestionaryService //  private readonly questionsService: QuestionsService
+    private readonly questionaryService: QuestionaryService, //  private readonly questionsService: QuestionsService
   ) {}
 
   ngOnInit(): void {
