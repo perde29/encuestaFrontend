@@ -29,7 +29,7 @@ export class CategoryService {
   }
 
   getCategoryId(id: number) {
-    return this.http.get<Category[]>(`${base_url}/category/${id}`).pipe(
+    return this.http.get<Category>(`${base_url}/category/${id}`).pipe(
       map((data) => {
         return data;
       }),
@@ -76,6 +76,20 @@ export class CategoryService {
           title: item.title,
           state: item.state,
         }));
+      }),
+      catchError(this.handleError),
+    );
+  }
+
+  getSaveCategory(data: any) {
+    const token = localStorage.getItem('token')?.trim();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    // /category
+    return this.http.post(`${base_url}/category`, data, { headers }).pipe(
+      map((data) => {
+        return data;
       }),
       catchError(this.handleError),
     );
